@@ -57,4 +57,9 @@ function isWordInCategory(language, word, category){
     return possibleWords.includes(word)
 }
 
-module.exports = {getRandWords,  getRandCategories, checkTranslation, isWordInCategory}; // export the function
+function getAllowedWords(language, category){
+    const possibleWords = transDict[category].flatMap(obj => obj[language]);
+    return possibleWords;
+}
+
+module.exports = {getRandWords,  getRandCategories, checkTranslation, isWordInCategory, getAllowedWords}; // export the function

@@ -1,4 +1,4 @@
-const {getRandWords, getRandCategories, checkTranslation, isWordInCategory} = require("./game1Functions.js")
+const {getRandWords, getRandCategories, checkTranslation, isWordInCategory, getAllowedWords} = require("./game1Functions.js")
 
 
 //getRandWords test
@@ -37,3 +37,6 @@ console.log(isWordInCategory("en", "dog", "animal"))
 console.log("specifying the language, word, and category with incorrect input")
 console.log(isWordInCategory("en", "dog", "weather"))
 
+//isWordInCategory test
+console.log("getAllowedWords tests")
+console.log(getAllowedWords("en", "animal"))
