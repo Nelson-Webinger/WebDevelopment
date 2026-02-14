@@ -16,15 +16,19 @@ function getRandWords(language, num = 1, category = null){
     // get possible words either the whole dictionary or just 1 category
     if (category){
         try{
-        possibleWords = Object.keys(transDict[language][category]);
+            possibleWords = transDict[category];
         } catch{
-            console.log("invalide language or category");
+            console.log("invalid category");
         }
     }
     else{
-        possibleWords = Object.values(transDict[language]).flatMap(Obj => Object.keys(Obj));
+        possibleWords = Object.values(transDict).flat();
     }
-
+    try{
+        possibleWords = possibleWords.map(word => word[language]).flat();
+    } catch{
+        console.log("invalid language");
+    }
     // get random sample of words from possible words
     shuffleInPlace(possibleWords);
     words = possibleWords.slice(0,num);
@@ -32,8 +36,8 @@ function getRandWords(language, num = 1, category = null){
 }
 
 //getCategory
-function getRandCategories(language, num = 1){
-    const possibleCategories = Object.keys(transDict[language]);
+function getRandCategories(num = 1){
+    const possibleCategories = Object.keys(transDict);
     shuffleInPlace(possibleCategories);
     const randCategories = possibleCategories.slice(0,num);
     return randCategories;
@@ -41,22 +45,16 @@ function getRandCategories(language, num = 1){
 
 
 //checkTranslation
-function checkTranslation(language, word, translation, category = null){
-    if(category){
-        return transDict[language][category][word].includes(translation);
-    }
-    for (const category of Object.values(transDict[language])){
-        if (Object.keys(category).includes(word)){
-            return category[word].includes(translation.toLowerCase());
-        }
-    }
+function checkTranslation(language, word, translation){
+    possibleWords = Object.values(transDict).flat();
+    return possibleWords.find(obj => obj["id"] === word)[language].includes(translation);
 }
 
 
-//checkWordInGroup
-function checkWordInGroup(language, word, category){
-    const possibleWords = Object.values(transDict[language][category]).flat()
+//isWordInCategory
+function isWordInCategory(language, word, category){
+    const possibleWords = transDict[category].flatMap(obj => obj[language]);
     return possibleWords.includes(word)
 }
 
-module.exports = {getRandWords,  getRandCategories, checkTranslation, checkWordInGroup}; // export the function
+module.exports = {getRandWords,  getRandCategories, checkTranslation, isWordInCategory}; // export the function
